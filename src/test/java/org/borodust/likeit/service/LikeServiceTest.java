@@ -1,23 +1,36 @@
 package org.borodust.likeit.service;
 
+import org.borodust.likeit.data.LikeRepository;
+import org.borodust.likeit.service.impl.DefaultLikeService;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 /**
- *
+ * @author Pavel Korolev
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class LikeServiceTest {
     private static final String THING_TO_LIKE = "like-it-service";
-
-    @Autowired
     private LikeService likeService;
+
+    @Before
+    public void cleanupFixture() {
+        this.likeService = new DefaultLikeService(setupLikeRepositoryMock());
+    }
+
+    private LikeRepository setupLikeRepositoryMock() {
+        LikeRepository mock = mock(LikeRepository.class);
+        AtomicLong counter = new AtomicLong(0);
+        doAnswer((invocation) -> counter.incrementAndGet())
+                .when(mock).increment(THING_TO_LIKE);
+        when(mock.count(THING_TO_LIKE))
+                .thenAnswer((invocation) -> counter.get());
+        return mock;
+    }
 
     @Test
     public void like() {

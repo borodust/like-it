@@ -27,7 +27,7 @@ public class ApiController {
 
         // FIXME Make async
         likeService.like(thing);
-        result.setResult("");
+        result.setResult("OK");
 
         return result;
     }
