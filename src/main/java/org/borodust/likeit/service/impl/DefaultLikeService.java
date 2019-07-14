@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DefaultLikeService implements LikeService {
+    private static final int NAME_MAX_LENGTH = 280;
     private final LikeRepository likeRepository;
 
     @Autowired
@@ -21,11 +22,19 @@ public class DefaultLikeService implements LikeService {
 
     @Override
     public void like(String name) {
+        validateName(name);
         likeRepository.increment(name);
     }
 
     @Override
     public long getLikes(String name) {
+        validateName(name);
         return likeRepository.count(name);
+    }
+
+    private void validateName(String name) {
+        if (name == null || name.length() == 0 || name.length() > NAME_MAX_LENGTH) {
+            throw new IllegalArgumentException("Invalid name");
+        }
     }
 }
