@@ -34,6 +34,12 @@ public class ApiController {
         this.likeService = likeService;
     }
 
+    /**
+     * Likes a thing.
+     *
+     * @param name name of the thing to like
+     * @return 200 with OK in the body for success or 400 with DO NO HARM for malformed requests
+     */
     @RequestMapping("/like")
     public DeferredResult<ResponseEntity<String>> like(@RequestParam("name") String name) {
         DeferredResult<ResponseEntity<String>> deferred = new DeferredResult<>();
@@ -45,6 +51,13 @@ public class ApiController {
         return deferred;
     }
 
+    /**
+     * Retrieves number of likes for a specified name.
+     *
+     * @param name name of the thing to retrieve number of likes for
+     * @return 200 with number of likes in the body for success
+     * or 400 with DO NO HARM for malformed requests
+     */
     @RequestMapping("/get-likes")
     public DeferredResult<ResponseEntity<String>> displayError(@RequestParam("name") String name) {
         DeferredResult<ResponseEntity<String>> deferred = new DeferredResult<>();
@@ -54,6 +67,12 @@ public class ApiController {
         return deferred;
     }
 
+    /**
+     * Reports uncaught exception as a malformed request.
+     *
+     * @param ex Uncaught exception
+     * @return 404 DO NO HARM
+     */
     @ExceptionHandler({Exception.class})
     public ResponseEntity<String> displayError(Exception ex) {
         log.error("Invalid request", ex);

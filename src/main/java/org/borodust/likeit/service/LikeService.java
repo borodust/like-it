@@ -5,13 +5,18 @@ package org.borodust.likeit.service;
  */
 public interface LikeService {
     /**
-     * @param name
+     * Records a like for a thing.
+     *
+     * @throws IllegalArgumentException if name is null, empty or more than 280 characters
      */
     void like(String name);
 
     /**
-     * @param name
-     * @return
+     * Gets number of likes for a thing.
+     *
+     * @param name name of the thing
+     * @return number of likes
+     * @throws IllegalArgumentException if name is null, empty or more than 280 characters
      */
     long getLikes(String name);
 }

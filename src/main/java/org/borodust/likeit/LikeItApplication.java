@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -30,12 +29,24 @@ public class LikeItApplication {
         SpringApplication.run(LikeItApplication.class, args);
     }
 
+    /**
+     * Creates an executor for processing requests.
+     *
+     * @param workerCount number of worker threads
+     * @return executor for processing requests
+     */
     @Bean("worker-pool")
     Executor workerPool(@Value("${like.worker.count}") int workerCount) {
         log.info("Worker count: {}", workerCount);
         return newFixedThreadPool(workerCount);
     }
 
+    /**
+     * Creates a redis template for handling string-long pairs.
+     *
+     * @param redisson redisson client setup via spring boot
+     * @return redis template mapping between thing names and like counts
+     */
     @Bean
     RedisTemplate<String, Long> redisTemplate(RedissonClient redisson) {
         final RedisTemplate<String, Long> template = new RedisTemplate<>();
