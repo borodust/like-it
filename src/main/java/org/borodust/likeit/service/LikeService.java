@@ -5,13 +5,13 @@ package org.borodust.likeit.service;
  */
 public interface LikeService {
     /**
-     * @param thing
+     * @param name
      */
-    void like(String thing);
+    void like(String name);
 
     /**
-     * @param thing
+     * @param name
      * @return
      */
-    long getLikes(String thing);
+    long getLikes(String name);
 }

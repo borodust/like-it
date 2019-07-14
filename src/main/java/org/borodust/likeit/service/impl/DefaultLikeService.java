@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DefaultLikeService implements LikeService {
-    private static final int NAME_MAX_LENGTH = 280;
+    static final int NAME_MAX_LENGTH = 280;
     private final LikeRepository likeRepository;
 
     @Autowired
