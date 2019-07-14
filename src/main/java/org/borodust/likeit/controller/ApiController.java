@@ -20,7 +20,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
 
 /**
- * Non-blocking asynchronous Web interface to Like It! service
+ * Non-blocking asynchronous REST interface to Like It! service
  *
  * @author Pavel Korolev
  */

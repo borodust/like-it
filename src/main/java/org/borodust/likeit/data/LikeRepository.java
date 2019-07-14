@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Repository to save and retrieve like numbers.
+ */
 @Repository
 public class LikeRepository {
     private final RedisTemplate<String, Long> redis;

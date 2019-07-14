@@ -21,7 +21,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>12</maven.compiler.source>
         <maven.compiler.target>12</maven.compiler.target>
-        <junit.jupiter.version>5.5.0</junit.jupiter.version>
     </properties>
 
     <dependencies>
@@ -92,4 +91,23 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <like.redis.host>database</like.redis.host>
+                <like.redis.cluster.nodes></like.redis.cluster.nodes>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <like.redis.host></like.redis.host>
+                <like.redis.cluster.nodes></like.redis.cluster.nodes>
+            </properties>
+        </profile>
+    </profiles>
 </project>
