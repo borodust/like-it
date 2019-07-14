@@ -4,8 +4,8 @@ import org.borodust.likeit.service.impl.AsyncLikeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +14,8 @@ import org.springframework.web.context.request.async.DeferredResult;
 import java.util.concurrent.CompletionException;
 
 import static java.lang.String.valueOf;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
@@ -45,12 +47,18 @@ public class ApiController {
     }
 
     @RequestMapping("/get-likes")
-    public DeferredResult<ResponseEntity<String>> getLikes(@RequestParam("name") String name) {
+    public DeferredResult<ResponseEntity<String>> displayError(@RequestParam("name") String name) {
         DeferredResult<ResponseEntity<String>> deferred = new DeferredResult<>();
         likeService.getLikes(name)
                 .thenAccept(likes -> deferred.setResult(ok(valueOf(likes))))
                 .exceptionally(ex -> reportError(deferred, ex));
         return deferred;
+    }
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<String> displayError(Exception ex) {
+        log.error("Invalid request", ex);
+        return ResponseEntity.status(FORBIDDEN).body("DO NO HARM");
     }
 
     private Void reportError(DeferredResult<ResponseEntity<String>> deferred, Throwable originalException) {
@@ -64,7 +72,7 @@ public class ApiController {
             deferred.setResult(badRequest().body("BAD REQUEST"));
         } catch (Throwable ex) {
             log.error("Unexpected server error", ex);
-            deferred.setResult(status(HttpStatus.INTERNAL_SERVER_ERROR)
+            deferred.setResult(status(INTERNAL_SERVER_ERROR)
                     .body("I'M NOT FEELING TOO WELL"));
         }
         return null;
