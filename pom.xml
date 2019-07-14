@@ -110,6 +110,7 @@
                 <like.redis.password>${like.secret.redis.password}</like.redis.password>
                 <like.redis.cluster.nodes>${like.secret.redis.cluster.nodes}</like.redis.cluster.nodes>
                 <likeit.profiles.active>prod</likeit.profiles.active>
+                <like.image.repository>private</like.image.repository>
             </properties>
         </profile>
     </profiles>
