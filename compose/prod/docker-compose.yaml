@@ -1,13 +1,17 @@
 version: '3.7'
 services:
   like-it:
-    image: borodust/private:like-it-prod-latest
+    image: borodust/like-it:latest
+    environment:
+      - LIKEIT_PROFILES=cluster
+      - LIKEIT_REDIS_PASSWORD=${LIKEIT_REDIS_PASSWORD}
+      - LIKEIT_REDIS_CLUSTER_NODES=${LIKEIT_REDIS_CLUSTER_NODES}
     ports:
-      - 8080:80
+      - 80:8080
     deploy:
       mode: replicated
       replicas: 3
       restart_policy:
         condition: on-failure
         delay: 15s
-        window: 15s
+        window: 60s

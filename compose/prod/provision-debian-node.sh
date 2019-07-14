@@ -21,8 +21,9 @@ add-apt-repository \
 apt-get update
 apt-get install -y docker-ce docker-ce-cli containerd.io
 
-# for ssh and docker swarm
+# for ssh, http and docker swarm
 ufw allow 22/tcp
+ufw allow 80/tcp
 ufw allow 2376/tcp
 ufw allow 2377/tcp
 ufw allow 7946/tcp

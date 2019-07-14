@@ -5,6 +5,10 @@ WORK_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 JAVA_ARGS="-Xmx256m \
 -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
 
+if [[ ! -z "$LIKEIT_PROFILES" ]]; then
+JAVA_ARGS+=" -Dspring.profiles.active=${LIKEIT_PROFILES}"
+fi
+
 if [[ ! -z "$LIKEIT_WORKER_COUNT" ]]; then
 JAVA_ARGS+=" -Dlike.worker.count=${LIKEIT_WORKER_COUNT}"
 fi
