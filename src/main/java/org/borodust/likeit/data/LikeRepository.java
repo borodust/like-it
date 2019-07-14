@@ -1,23 +1,24 @@
 package org.borodust.likeit.data;
 
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class LikeRepository {
-    private final RedissonClient redis;
+    private final RedisTemplate<String, Long> redis;
 
     @Autowired
-    public LikeRepository(RedissonClient redissonClient) {
-        this.redis = redissonClient;
+    public LikeRepository(RedisTemplate<String, Long> redisTemplate) {
+        this.redis = redisTemplate;
     }
 
     public void increment(String name) {
-        redis.getAtomicLong(name).incrementAndGet();
+        redis.opsForValue().increment(name);
     }
 
     public long count(String name) {
-        return redis.getAtomicLong(name).get();
+        Long count = redis.opsForValue().get(name);
+        return count == null ? 0 : count;
     }
 }
