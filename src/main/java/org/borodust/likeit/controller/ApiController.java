@@ -14,7 +14,6 @@ import org.springframework.web.context.request.async.DeferredResult;
 import java.util.concurrent.CompletionException;
 
 import static java.lang.String.valueOf;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
@@ -58,7 +57,7 @@ public class ApiController {
     @ExceptionHandler({Exception.class})
     public ResponseEntity<String> displayError(Exception ex) {
         log.error("Invalid request", ex);
-        return ResponseEntity.status(FORBIDDEN).body("DO NO HARM");
+        return badRequestResponse();
     }
 
     private Void reportError(DeferredResult<ResponseEntity<String>> deferred, Throwable originalException) {
@@ -69,12 +68,16 @@ public class ApiController {
                 throw originalException;
             }
         } catch (IllegalArgumentException ex) {
-            deferred.setResult(badRequest().body("BAD REQUEST"));
+            deferred.setResult(badRequestResponse());
         } catch (Throwable ex) {
             log.error("Unexpected server error", ex);
             deferred.setResult(status(INTERNAL_SERVER_ERROR)
                     .body("I'M NOT FEELING TOO WELL"));
         }
         return null;
+    }
+
+    private ResponseEntity<String> badRequestResponse() {
+        return badRequest().body("DO NO HARM");
     }
 }

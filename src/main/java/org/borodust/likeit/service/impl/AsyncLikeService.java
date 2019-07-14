@@ -9,7 +9,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
 /**
- * Asynchronous service for keeping likes, based on {@link LikeService}
+ * Asynchronous service for keeping likes based on {@link LikeService}
  *
  * @author Pavel Korolev
  */
