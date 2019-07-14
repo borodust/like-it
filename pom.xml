@@ -99,6 +99,8 @@
             </activation>
             <properties>
                 <like.redis.host>database</like.redis.host>
+                <like.redis.port>6379</like.redis.port>
+                <like.redis.password></like.redis.password>
                 <like.redis.cluster.nodes></like.redis.cluster.nodes>
             </properties>
         </profile>
@@ -106,7 +108,9 @@
             <id>prod</id>
             <properties>
                 <like.redis.host></like.redis.host>
-                <like.redis.cluster.nodes></like.redis.cluster.nodes>
+                <like.redis.port></like.redis.port>
+                <like.redis.password>${like.secret.redis.password}</like.redis.password>
+                <like.redis.cluster.nodes>${like.secret.redis.cluster.nodes}</like.redis.cluster.nodes>
             </properties>
         </profile>
     </profiles>
