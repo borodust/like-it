@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  like-it:
+    image: borodust/private:like-it-prod-latest
+    ports:
+      - 8080:80
+    deploy:
+      mode: replicated
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        delay: 15s
+        window: 15s
