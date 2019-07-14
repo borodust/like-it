@@ -40,7 +40,13 @@ public class AsyncLikeService {
 
     private <T> CompletableFuture<T> execute(Supplier<T> supplier) {
         CompletableFuture<T> result = new CompletableFuture<>();
-        executor.execute(() -> result.complete(supplier.get()));
+        executor.execute(() -> {
+            try {
+                result.complete(supplier.get());
+            } catch (Throwable ex) {
+                result.completeExceptionally(ex);
+            }
+        });
         return result;
     }
 
