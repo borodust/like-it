@@ -1,6 +1,6 @@
 package org.borodust.likeit.controller;
 
-import org.borodust.likeit.service.LikeService;
+import org.borodust.likeit.service.impl.AsyncLikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,31 +14,28 @@ import org.springframework.web.context.request.async.DeferredResult;
  */
 @RestController
 public class ApiController {
-    private final LikeService likeService;
+    private final AsyncLikeService likeService;
 
     @Autowired
-    public ApiController(LikeService likeService) {
+    public ApiController(AsyncLikeService likeService) {
         this.likeService = likeService;
     }
 
     @RequestMapping("/like")
     public DeferredResult<String> like(@RequestParam("name") String thing) {
-        DeferredResult<String> result = new DeferredResult<>();
+        DeferredResult<String> deferred = new DeferredResult<>();
 
-        // FIXME Make async
-        likeService.like(thing);
-        result.setResult("OK");
+        likeService.like(thing)
+                .thenRun(() -> deferred.setResult("OK"));
 
-        return result;
+        return deferred;
     }
 
     @RequestMapping("/get-likes")
     public DeferredResult<String> getLikes(@RequestParam("name") String thing) {
-        DeferredResult<String> result = new DeferredResult<>();
-
-        // FIXME Make async
-        long likes = likeService.getLikes(thing);
-        result.setResult(String.valueOf(likes));
-        return result;
+        DeferredResult<String> deferred = new DeferredResult<>();
+        likeService.getLikes(thing)
+                .thenAccept(likes -> deferred.setResult(String.valueOf(likes)));
+        return deferred;
     }
 }

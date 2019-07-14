@@ -9,7 +9,6 @@ public class LikeRepository {
     private final RedissonClient redis;
 
     @Autowired
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public LikeRepository(RedissonClient redissonClient) {
         this.redis = redissonClient;
     }
