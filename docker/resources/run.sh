@@ -2,8 +2,11 @@
 
 WORK_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-JAVA_ARGS="-Xmx256m \
--agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+JAVA_ARGS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+
+if [[ ! -z "$LIKEIT_JAVA_OPTS" ]]; then
+JAVA_ARGS+=" ${LIKEIT_JAVA_OPTS}"
+fi
 
 if [[ ! -z "$LIKEIT_PROFILES" ]]; then
 JAVA_ARGS+=" -Dspring.profiles.active=${LIKEIT_PROFILES}"
