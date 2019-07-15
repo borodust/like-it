@@ -6,11 +6,20 @@ services:
       - LIKEIT_PROFILES=cluster
       - LIKEIT_REDIS_PASSWORD=${LIKEIT_REDIS_PASSWORD}
       - LIKEIT_REDIS_CLUSTER_NODES=${LIKEIT_REDIS_CLUSTER_NODES}
+      # for CPU-optimized DO instance: 2vCPU 4Gb
+      - LIKEIT_JAVA_OPTS=-Xmx3g
+      - LIKEIT_WORKER_COUNT=8
     ports:
       - 80:8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/get-likes?name=health"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
       restart_policy:
         condition: on-failure
         delay: 15s

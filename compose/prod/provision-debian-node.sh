@@ -9,7 +9,8 @@ apt-get install -y \
     curl \
     gnupg2 \
     software-properties-common \
-    ufw
+    ufw \
+    htop
 
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 
